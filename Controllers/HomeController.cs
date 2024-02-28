@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Aula01.Models;
 using POKES.Models;
+using System.Text.Json;
 
 namespace Aula01.Controllers;
 
@@ -16,14 +17,20 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        Pokemon pikachu = new()
+        List<Pokemon> pokemons = [];
+        using (StreamReader leitor = new("Data\\pokemons.json"))
         {
-            Numero = 25,
-            Nome = "pikachu",
-            Imagem = "img/pokemons/025.png",
-            Tipo = ["Elétrico"],
-        };
-        return View(pikachu);
+            string dados = leitor.ReadToEnd();
+            pokemons = JsonSerializer.Deserialize<List<Pokemon>>(dados);
+        }
+        List<Tipo> tipos = [];
+        using (StreamReader leitor = new("Data\\tipos.json"))
+        {
+            string dados = leitor.ReadToEnd();
+            tipos = JsonSerializer.Deserialize<List<Tipo>>(dados);
+        }
+        ViewData["Tipos"] = tipos;
+        return View(pokemons);
     }
 
     public IActionResult Xalrons()
