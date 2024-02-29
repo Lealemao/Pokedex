@@ -2,27 +2,36 @@
 @{
     ViewData["Title"] = "Home";
     var tipos = (List<POKES.Models.Tipo>)ViewData["Tipos"];
+    string Cor(string nome)
+    {
+        return tipos.Where(t => t.Nome == nome).Select(t => t.Cor).FirstOrDefault();
+    }
 }
 
-<section class="pt-5 pb-3 text-center container">
-    <div class="row">
-        <div class="col mx-auto">
-            <h1>POKES</h1>
-            <div class="group">
-                <button id="btn-all" class="btn btn-md my-2 text-white bg-dark btn-filter">
-                    Ver Todos
-                </button>
+<div class="bg-dark">
 
-                @foreach (var tipo in tipos)
-                {
-                    <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter" style="background-color:@tipo.Cor">
-                        @tipo.Nome
+    <section class="pt-5 pb-3 text-center text-white container">
+        <div class="row">
+            <div class="col mx-auto">
+                <h1>POKES</h1>
+                <div class="group">
+                    <button id="btn-all" class="btn btn-md my-2 text-dark bg-white btn-filter">
+                        Ver Todos
                     </button>
-                }
+
+                    @foreach (var tipo in tipos)
+                    {
+                        <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
+                            style="background-color:@tipo.Cor">
+                            @tipo.Nome
+                        </button>
+                    }
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    
+</div>
 
 <div class="py-5 bg-dark">
     <div class="container">
@@ -41,7 +50,7 @@
                             <div class="btn-group">
                                 @foreach (var tipo in pokemon.Tipo)
                                 {
-                                    <a href="#" class="btn my-2 text-white" style="background-color:#7c5">@tipo</a>
+                                    <a href="#" class="btn my-2 text-white" style="background-color:@Cor(tipo)">@tipo</a>
                                 }
                             </div>
                         </div>

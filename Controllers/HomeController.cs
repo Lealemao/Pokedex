@@ -9,6 +9,8 @@ namespace Aula01.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private List<Pokemon> pokemons = [];
+    private List<Tipo> tipos = [];
 
     public HomeController(ILogger<HomeController> logger)
     {
@@ -17,13 +19,11 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        List<Pokemon> pokemons = [];
         using (StreamReader leitor = new("Data\\pokemons.json"))
         {
             string dados = leitor.ReadToEnd();
             pokemons = JsonSerializer.Deserialize<List<Pokemon>>(dados);
         }
-        List<Tipo> tipos = [];
         using (StreamReader leitor = new("Data\\tipos.json"))
         {
             string dados = leitor.ReadToEnd();
@@ -33,9 +33,20 @@ public class HomeController : Controller
         return View(pokemons);
     }
 
-    public IActionResult Xalrons()
+    public IActionResult Details(int id)
     {
-        return View();
+        using (StreamReader leitor = new("Data\\pokemons.json"))
+        {
+            string dados = leitor.ReadToEnd();
+            pokemons = JsonSerializer.Deserialize<List<Pokemon>>(dados);
+        }
+        using (StreamReader leitor = new("Data\\tipos.json"))
+        {
+            string dados = leitor.ReadToEnd();
+            tipos = JsonSerializer.Deserialize<List<Tipo>>(dados);
+        }
+        var pokemon = pokemons.Where(p => p.Numero == id).FirstOrDefault();
+        return View(pokemon);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
