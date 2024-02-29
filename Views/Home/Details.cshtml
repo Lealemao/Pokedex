@@ -1,18 +1,23 @@
 ﻿@model POKES.Models.Pokemon
 @{
+    var tipos = (List<POKES.Models.Tipo>)ViewData["Tipos"];
+    string Cor(string nome)
+    {
+        return tipos.Where(t => t.Nome == nome).Select(t => t.Cor).FirstOrDefault();
+    }    
     ViewData["Title"] = @Model.Nome;
 }
 
 <section class="pt-5 container">
     <div class="row">
         @* <div class="col text-center">
-            <a href="#" class="btn btn-lg btn-outline-dark">001 - Bulbasaur</a>
+        <a href="#" class="btn btn-lg btn-outline-dark">001 - Bulbasaur</a>
         </div> *@
         <div class="col text-center">
             <h1 class="fs-1">@Model.Nome <span class="fs-2 text-secondary">@Model.Numero.ToString("000")</span></h1>
         </div>
         @* <div class="col text-center">
-            <a href="#" class="btn btn-lg btn-outline-dark">003 - Venusaur</a>
+        <a href="#" class="btn btn-lg btn-outline-dark">003 - Venusaur</a>
         </div> *@
     </div>
 
@@ -27,9 +32,12 @@
             <p class="mb-3"><strong>Peso:</strong> @Model.Peso</p>
             <p class="fw-bold">Tipo</p>
             <div class="btn-group">
-                @foreach (var tipo in Model.Tipo){
-                <a href="#" class="btn btn-lg text-white" style="background-color:">@tipo</a>
+
+                @foreach (var tipo in Model.Tipo)
+                {
+                    <a href="#" class="btn btn-lg text-white" style="background-color:@Cor(tipo)">@tipo</a>
                 }
+
             </div>
         </div>
     </div>

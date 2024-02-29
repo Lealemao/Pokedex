@@ -45,7 +45,9 @@ public class HomeController : Controller
             string dados = leitor.ReadToEnd();
             tipos = JsonSerializer.Deserialize<List<Tipo>>(dados);
         }
+        
         var pokemon = pokemons.Where(p => p.Numero == id).FirstOrDefault();
+        ViewData["Tipos"] = tipos;
         return View(pokemon);
     }
 
